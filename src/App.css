@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+#calculator{
+  height: 75%
+}
+
+.calculator-button{
+
+  border-radius: 50%;
+  border-width: 5px;
+  border-color: blue;
+  border-style: solid;
+}
