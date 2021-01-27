@@ -1,86 +1,121 @@
 import React from 'react'
+import {evaluate} from 'mathjs'
 import './App.css';
 
 function App() {
-  const [displayFormula, setDisplayFormula] = React.useState("")
-  const [displayValue, setDisplayValue] = React.useState("")
+  const [displayFormula, setDisplayFormula] = React.useState("");
+  const [displayValue, setDisplayValue] = React.useState("");
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   let dispatcher = (action) => {
-
     if(action === "+") {
       if(displayFormula.charAt(displayFormula.length -1) !== "+"){
         setDisplayFormula(displayFormula + "+");
+        setDisplayValue("+")
       }
 
     }
     else if(action === "-"){
       if(displayFormula.charAt(displayFormula.length -2) !== "-"){
         setDisplayFormula(displayFormula + "-");
+        setDisplayValue("-")
       }
 
     }
     else if(action === "/"){
       if(displayFormula.charAt(displayFormula.length -1) !== "/"){
         setDisplayFormula(displayFormula + "/");
+        setDisplayValue("/")
       }
 
     }
     else if(action === "*"){
       if(displayFormula.charAt(displayFormula.length -1) !== "*"){
         setDisplayFormula(displayFormula + "*");
-        setDisplayValue(displayValue + "*")
+        setDisplayValue("*")
       }
 
     }
     else if(action === "."){
-      if(displayFormula.charAt(displayFormula.length -1) !== "."){
+      if(
+        displayFormula.charAt(displayFormula.length -1) !== "." ||
+        displayFormula.charAt(displayFormula.length -1) !== "+" ||
+        displayFormula.charAt(displayFormula.length -1) !== "-" ||
+        displayFormula.charAt(displayFormula.length -1) !== "*" ||
+        displayFormula.charAt(displayFormula.length -1) !== "/" 
+        ){
         setDisplayFormula(displayFormula + ".");
+        setDisplayValue(displayValue + ".")
       }
 
     }
     else if(action === "="){
-      setDisplayFormula(displayValue);
-      //alert(eval(displayFormula))
-      setDisplayValue(eval(displayFormula))
+      
+      try {
+        
+        setDisplayValue(evaluate(displayFormula))
+      } catch (err) {
+        alert("there was an error")
+        setErrorMessage("There was a problem with the expression added")
+      }
+        
 
       
     }
     else if(action === "AC"){
       setDisplayFormula("");
-      setDisplayValue(0);
+      setDisplayValue("");
     }
     else if(!isNaN(action)){
       setDisplayFormula(displayFormula + action)
-      setDisplayValue(displayFormula+ action)
+      if(isNaN(displayValue)){
+        setDisplayValue(action)
+      }
+      else {
+        setDisplayValue(displayValue + action)
+      }
+      
+    
     }
 
   }
   return (
-    <div className="App container">
+    <div className="App container pt-4">
+      <div class="row">
+        <p class="h1">
+          Javascript Calculator
+        </p>
+
+      </div>
+      <br />
       <div class="row justify-content-center">
+        <div>
+          {errorMessage}
+        </div>
         <div id="calculator" class="col-5 ">
           <div id="display" class="row">
-            <div class="col-12 text-end">
-              <p className="h2">{displayValue}</p>
-              <p className="h2">{displayFormula}</p>
+            <div class="col-12 text-end text-break">
+              {displayFormula === "" ? <br /> : <p className="h2 text-wrap">{displayFormula}</p>}
+              {displayValue === "" ? <br/> : <p className="h2 text-wrap">{displayValue}</p>}
+              
             </div>
             
           </div>
           <div class="row">
               <div 
-                class="col-6 calculator-button"
+                class="col-6 calculator-button calculator-button-operation"
                 onClick={()=>{dispatcher("AC")}}
               >
                 AC
               </div>
               <div 
-                class="col-3 calculator-button"
+                class="col-3 calculator-button calculator-button-operation"
                 onClick={()=>dispatcher("/")}
               >
                 /
               </div>
               <div 
-                className="col-3 calculator-button"
+                className="col-3 calculator-button calculator-button-operation"
                 onClick={()=>{dispatcher("*")}}
               >
                 *
@@ -106,7 +141,7 @@ function App() {
               9
             </div>
             <div 
-              class="col-3 calculator-button"
+              class="col-3 calculator-button calculator-button-operation"
               onClick={()=>{dispatcher("-")}}
             >
               -
@@ -114,7 +149,7 @@ function App() {
           </div>
           <div class="row">
             <div 
-              class="btn col-3 calculator-button"
+              class="col-3 calculator-button"
               onClick={()=>{dispatcher("4")}}
             >
               4
@@ -132,7 +167,7 @@ function App() {
               6
             </div>
             <div 
-              class="col-3 calculator-button"
+              class="col-3 calculator-button calculator-button-operation"
               onClick={()=>{dispatcher("+")}}
             >
               +
@@ -165,14 +200,12 @@ function App() {
                   <div 
                     class="col-9 calculator-button" 
                     onClick={()=>{dispatcher("0")}}
-                    style={{"background-color": "#aba"}}
                   >
                       0
                   </div>
                   <div 
                     class="col-3 calculator-button" 
                     onClick={()=>{dispatcher(".")}}
-                    style={{"background-color": "#abc"}}
                   >
                       .
                   </div>      
@@ -180,9 +213,8 @@ function App() {
               </div>
             </div>
             <div 
-              class="col-3 " 
+              class="col-3 calculator-button calculator-button-operation" 
               onClick={()=>{dispatcher("=")}}
-              style={{"background-color": "#aba"}}
             >
               =
             </div>
