@@ -1,5 +1,26 @@
+
+@font-face{
+  font-family: "space-mono";
+  src: url("./fonts/Space_Mono/SpaceMono-Regular.ttf");
+}
+
+html, body {
+  background-color: #a0dec7;
+  height: 100%;
+  width: 100%;
+}
+
+body{
+  background-image: url('./images/pexels-pixabay-53621.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+
 .App {
   text-align: center;
+
 }
 
 .App-logo {
@@ -38,13 +59,26 @@
 }
 
 #calculator{
-  height: 75%
+  height: 75%;
+  border-radius: 5px;
+  border-width: 5px;
+  border-color: #190707;
+  border-style: solid;
+
+    
 }
 
 .calculator-button{
 
-  border-radius: 50%;
-  border-width: 5px;
-  border-color: blue;
-  border-style: solid;
+  background-color: #2f6e9c;
+  font-family: space-mono;
+  font-size: 23px;
+}
+
+.calculator-button-operation{
+  background-color: #307a82;
+}
+
+#display{
+  background-color: #5eb7e3;
 }
